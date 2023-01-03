@@ -1,0 +1,44 @@
+CREATE TABLE stars (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    fullname TEXT,
+    age INTEGER);
+    
+INSERT INTO stars (fullname, age) VALUES ("Goldie Hawn", "77");
+INSERT INTO stars (fullname, age) VALUES ("Kurt Russel", "71");
+INSERT INTO stars (fullname, age) VALUES ("Ashton Kutcher", "44");
+INSERT INTO stars (fullname, age) VALUES ("Mila Kunis", "39");
+INSERT INTO stars (fullname, age) VALUES ("Kevin Costner", "67");
+
+CREATE table movies (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    person_id INTEGER,
+    name TEXT);
+    
+INSERT INTO movies (person_id, name) VALUES (1, "Overboard");
+INSERT INTO movies (person_id, name) VALUES (2, "Overboard");
+INSERT INTO movies (person_id, name) VALUES (3, "Jobs");
+INSERT INTO movies (person_id, name) VALUES (4, "Bad Moms");
+INSERT INTO movies (person_id, name) VALUES (5, "Dances with Wolves");
+
+
+CREATE table spouse (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    person1_id INTEGER,
+    person2_id INTEGER);
+
+INSERT INTO spouse (person1_id, person2_id)
+    VALUES (1, 2);
+INSERT INTO spouse (person1_id, person2_id)
+    VALUES (3, 4);
+    
+SELECT stars.fullname, movies.name
+FROM stars
+JOIN movies
+ON stars.id=movies.person_id;
+
+SELECT a.fullname, b.fullname
+FROM spouse
+JOIN stars a
+ON a.id = spouse.person1_id
+JOIN stars b
+ON b.id = spouse.person2_id;
