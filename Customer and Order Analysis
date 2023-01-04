@@ -15,7 +15,6 @@ SELECT COUNT(orderID)
         AND orderID <> "Order ID"
 --379--
 
-
 --Select the customer account numbers for all the orders that were placed in February.--
 SELECT customers.acctnum
     FROM BIT_DB.customers customers
@@ -31,28 +30,24 @@ SELECT Product, price
     WHERE price in(SELECT min(price) FROM BIT_DB.JanSales)
 --AAA Batteries(4-pack) $2.99--
 
-
 --What is the total revenue for each product sold in January?--
 SELECT sum(Quantity) * price as revenue, Product
     FROM BIT_DB.JanSales
     GROUP BY Product
---21 rows of data Display Top 5
+--21 rows of data displayed Top 5
 
 revenue	            Product	
-399500	             Macbook Pro Laptop
-216997.83000000002	 ThinkPad Laptop
-265300	             iPhone
-25200	             LG Washing Machine
-23400	             LG Dryer --
+399500              Macbook Pro Laptop
+216997.83000000002  ThinkPad Laptop
+265300              iPhone
+25200               LG Washing Machine
+23400               LG Dryer --
 
-
-    
 --Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each were sold, and what was the total revenue?--
 SELECT Product, SUM(Quantity), SUM(Quantity)*price as revenue 
     FROM BIT_DB.FebSales
     WHERE location = "548 Lincoln St, Seattle, WA 98101"
 --AA Batteries 2 $7.68--
-
 
 --How many customers ordered more than 2 products at a time in February, and what was the average amount spent for those customers?--
 SELECT COUNT(DISTINCT cust.acctnum), AVG(Quantity*price)
@@ -64,5 +59,16 @@ SELECT COUNT(DISTINCT cust.acctnum), AVG(Quantity*price)
     AND order_id <> 'Order ID'
  --278 $13.83--
 
-
+--List all the products sold in Los Angeles in February, and include how many of each were sold--
+SELECT Product, SUM(quantity)
+FROM BIT_DB.FebSales 
+WHERE location like '%Los Angeles%'
+GROUP BY Product
+--19 rows displayed Top 5
+Product                 Sum of Quantity 
+AAA Batteries (4-pack)	    351
+AA Batteries (4-pack)	    293
+USB-C Charging Cable	    271
+Lightning Charging Cable	243
+Wired Headphones	        191--
 
