@@ -72,3 +72,56 @@ USB-C Charging Cable	    271
 Lightning Charging Cable	243
 Wired Headphones	        191--
 
+--Which locations in New York received at least 3 orders in January, and how many orders did they each receive?--
+SELECT distinct location, count(orderID)
+    FROM BIT_DB.JanSales
+    WHERE location LIKE '%NY%'
+        AND length(orderid) = 6 
+        AND orderid <> 'Order ID'
+    GROUP BY location
+    HAVING count(orderID)>2
+    --
+Location                                    Count    
+148 Elm St, New York City, NY 10001         3
+515 Lincoln St, New York City, NY 10001     3
+916 Pine St, New York City, NY 10001        3
+961 Jefferson St, New York City, NY 10001	4--
+
+--How many of each type of headphone were sold in February?--
+SELECT Product, SUM(Quantity) as Quantity
+    FROM BIT_DB.FebSales
+    WHERE Product LIKE '%headphone%'
+    GROUP BY Product
+    ORDER BY Quantity
+ --
+Product                     Quantity
+Bose SoundSport Headphones	844
+Apple Airpods Headphones	1013
+Wired Headphones	        1282--
+
+--What was the average amount spent per account in February?--
+SELECT AVG(price*quantity)
+    FROM BIT_DB.FebSales Feb
+    LEFT JOIN BIT_DB.customers cust
+        ON Feb.orderID = cust.order_id     
+        WHERE length(order_id) = 6
+        AND order_id <> 'Order ID'
+-- $190.00--
+
+--What was the average quantity of products purchased per account in February?--
+SELECT SUM(Quantity)/COUNT(cust.acctnum)
+    FROM BIT_DB.FebSales Feb
+    LEFT JOIN BIT_DB.customers cust
+        ON Feb.orderID = cust.order_id     
+        WHERE length(order_id) = 6
+        AND order_id <> 'Order ID'
+--1--
+
+--Which product brought in the most revenue in January and how much revenue did it bring in total?--
+SELECT sum(Quantity*price) as revenue, Product
+    FROM BIT_DB.JanSales
+    GROUP BY Product
+    ORDER BY sum(quantity*price) desc 
+LIMIT 1
+--Macbook 399500--
+
