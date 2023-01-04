@@ -1,3 +1,4 @@
+--In this SQL, I'm querying a database with multiple tables to quantify statistics about customers and order data.--
 
 --How many orders were placed in January?--
 SELECT COUNT(orderID)
@@ -22,7 +23,7 @@ SELECT customers.acctnum
     ON customers.order_id = FebSales.orderID
         WHERE length(orderID) =6
         AND orderID <> "Order ID"
-        
+--1000 rows of data--        
 
 --Which product was the cheapest one sold in January, and what was the price?--
 SELECT Product, price
@@ -35,7 +36,16 @@ SELECT Product, price
 SELECT sum(Quantity) * price as revenue, Product
     FROM BIT_DB.JanSales
     GROUP BY Product
-    
+--21 rows of data Display Top 5
+
+revenue	            Product	
+399500	             Macbook Pro Laptop
+216997.83000000002	 ThinkPad Laptop
+265300	             iPhone
+25200	             LG Washing Machine
+23400	             LG Dryer --
+
+
     
 --Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each were sold, and what was the total revenue?--
 SELECT Product, SUM(Quantity), SUM(Quantity)*price as revenue 
@@ -52,6 +62,7 @@ SELECT COUNT(DISTINCT cust.acctnum), AVG(Quantity*price)
     WHERE Feb.Quantity > 2
     AND length(order_id) = 6
     AND order_id <> 'Order ID'
+ --278 $13.83--
 
 
 
