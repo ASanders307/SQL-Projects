@@ -1,0 +1,35 @@
+--In this SQL code, I'm querying a database that's holding Netflix data
+--to answer questions about the data using PostgreSQL
+
+--How many movie tites are there in the database? (movies only, no TV shows)
+SELECT COUNT (*)
+FROM "CharlotteChaze/BreakIntoTech"."netflix_titles_info"
+WHERE type ='Movie';
+--Count=6131
+
+--When ws the most recent bnarch of TV showsand/or movies added to the database?
+SELECT MAX(Date(date_added))
+FROM "CharlotteChaze/BreakIntoTech"."netflix_titles_info";
+--09/25/2021
+
+--List all the movies and TV shows in alphabetical order
+SELECT title
+FROM "CharlotteChaze/BreakIntoTech"."netflix_titles_info"
+ORDER BY title asc;
+
+--Who was the Director of the movie Bright Star?
+SELECT director
+FROM "CharlotteChaze/BreakIntoTech"."netflix_titles_info" titles
+LEFT JOIN "CharlotteChaze/BreakIntoTech"."netflix_people" people
+ON titles.show_id=people.show_id
+WHERE titles.title ='Bright Star';
+-Director Jane Campion
+
+--What is the oldest movie in the datavase and when was it made?
+SELECT title, release_year 
+FROM "CharlotteChaze/BreakIntoTech"."netflix_titles_info"
+WHERE type = 'Movie'
+AND release_year <= 
+(SELECT MIN(release_year) 
+FROM "CharlotteChaze/BreakIntoTech"."netflix_titles_info"
+WHERE type = 'Movie'); 
