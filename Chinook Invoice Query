@@ -1,0 +1,61 @@
+--Query Invoice and Sales to determine sales agents totals and customers. SQLiteServer used for queries
+--Show customers who are not in the US
+SELECT 
+    CustomerId, 
+    FirstName || ' ' || LastName AS "Full Name",
+    Company
+FROM chinook.customers
+WHERE Country <> "USA";
+
+-- Show only the customers from Brazil
+SELECT 
+    CustomerId, 
+    FirstName || ' ' || LastName AS "Full Name",
+    Company
+FROM chinook.customers
+WHERE Country = "Brazil";
+
+--Find the invoices of customers in Brazil
+Select cust.FirstName || ' ' || cust.LastName AS "Full Name",
+    inv.InvoiceId, inv.InvoiceDate, inv.BillingCountry
+    FROM chinook.invoices AS inv
+    LEFT JOIN chinook.customers AS cust 
+    ON inv.CustomerId = cust.CustomerID
+    WHERE inv.BillingCountry = "Brazil";
+
+--Show employees who are Sales Agents    
+SELECT FirstName || ' ' || LastName AS "Full Name", Title
+    FROM chinook.employees
+    Where Title = "Sales Support Agent";
+    
+--Query showing invoices assiciated with each sale agent    
+SELECT emp.FirstName || ' ' || emp.LastName AS "Full Name", inv.InvoiceId
+FROM chinook.Employees emp 
+JOIN chinook.Customers cust ON cust.SupportRepId = emp.EmployeeId
+JOIN chinook.Invoices Inv ON Inv.CustomerId = cust.CustomerId;
+
+-- Show the Invoice Total, Customer name, Country, and Sales Agent name for all invoices and customers.
+SELECT emp.FirstName || ' ' || emp.LastName AS "Full Name", cust.FirstName || ' ' || cust.LastName AS "Full Name", cust.Country, inv.total
+FROM chinook.employees emp 
+JOIN chinook.Customers cust ON cust.SupportRepId = emp.EmployeeId
+JOIN chinook.Invoices Inv ON Inv.CustomerId = cust.CustomerId;
+
+--Total Sales for 2009
+SELECT ROUND(SUM(Total),2) AS TotalSales2009
+FROM chinook.Invoices
+WHERE InvoiceDate BETWEEN '2009-01-01' AND '2009-12-31';
+
+--Total sales by each Sales Agent for 2009
+SELECT emp.FirstName || ' ' || emp.LastName AS "Full Name",
+ROUND(SUM(Inv.Total), 2) as 'Total Sales 2009' 
+FROM chinook.Employees emp
+
+JOIN chinook.Customers cust 
+ON cust.SupportRepId = emp.EmployeeId
+
+JOIN chinook.Invoices Inv 
+ON Inv.CustomerId = cust.CustomerId
+
+WHERE emp.Title = 'Sales Support Agent' 
+AND Inv.InvoiceDate LIKE '2009%' 
+GROUP BY emp.FirstName
